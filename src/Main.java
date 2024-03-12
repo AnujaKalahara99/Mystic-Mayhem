@@ -3,30 +3,22 @@ import java.util.List;
 
 public class Main {
 
-
     public static void main(String[] args) {
-        /////////Anuja: mage wadee harii hri nm hodagnim
 
        ArrayList<Player> players;
        players = SaveGame.deserializePlayers();
-//        //Methana player class eke hashmap eka initialize karagena iwara unata passe login ekata call karanna
+
+       System.out.println();
+       System.out.println("Welcome to Mystic Mayhem! where realms colide and legends rise. Forge your destiny amidst the chaos, where armies clash and alliances are forged.");
+       System.out.println("Will you conquer the unknown, or succumb to the mystic mayham? Choose your path wisely, for the fate of realms rests in your hands.");
        LoginSignupSystem.setPlayerData(players);
+       loop(players);
+    }
+
+    public static void loop(ArrayList<Player> players){
        Player activePlayer=LoginSignupSystem.run();
        if(activePlayer == null) return;
+       System.out.println();
        Menu.displayMenu(activePlayer,players);
-
-        //Player player = new Player();
-        //player.setUserName("Anuja");
-        //player.setGold(1000);
-        //Army army = new Army();
-
-//        army.recruitArcher(player);
-        //army.recruitWarrior(player);
-
-//        army.recruitArcher(player);
-//combat mode ek bool ek tiyenne koheda
-//        Player player=LoginSignupSystem.run();1
-//        System.out.println(player.getId());
-//        LoginSignupSystem.run();
     }
 }

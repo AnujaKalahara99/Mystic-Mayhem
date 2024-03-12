@@ -8,6 +8,11 @@ public class Armour extends  Wearable implements Serializable{
         super(name, price, attackBonus, defenceBonus, healthBonus, speedBonus);
     }
 
+    public static String[] listAll()
+    {
+        return new String[]{"Chainmail","Regalica", "Fleece"};
+    }
+
     public static int getBuyingPrice(String type){
         type = type.toLowerCase(Locale.ROOT);
         switch (type) {

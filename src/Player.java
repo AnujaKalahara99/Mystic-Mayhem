@@ -23,7 +23,7 @@ public class Player implements Serializable{
         this.password = password;
         this.army = new Army();
         this.id=++count;
-        this.gold=500;
+        this.gold=1000;
         this.xp=0;
 
 
@@ -72,6 +72,10 @@ public class Player implements Serializable{
         this.name = name;
     }
 
+    public void setXp(float xp) {
+        this.xp = xp;
+    }
+
     public Boolean getCombatMode() {
         return combatMode;
     }
@@ -80,6 +84,14 @@ public class Player implements Serializable{
         this.combatMode = combatMode;
     }
     public Player selectOpponent(ArrayList<Player> players){
+        if(!army.isArmyReady() ){
+            System.out.println("Not Enough Warriors in your team");
+            return null;
+        }
+        if(this.homeGround == null || this.homeGround.isEmpty()){
+            System.out.println("HomeGround Not Selected");
+            return null;
+        }
         ArrayList<Player> playerscopy= new ArrayList<Player>(players);
         playerscopy.remove(this);
 
@@ -97,5 +109,28 @@ public class Player implements Serializable{
     public float getXp() {
         return xp;
     }
+
+    public void setHomeGround(int choice){
+        switch (choice){
+            case 1:
+                this.homeGround = "hillcrest";
+                break;
+            case 2:
+                this.homeGround = "marshland";
+                break;
+            case 3:
+                this.homeGround = "dessert";
+                break;
+            case 4:
+                this.homeGround = "arcane";
+                break;
+            default:
+                System.out.println("Invalid response. Try again!");
+        }
+    }
+    public String getHomeGround() {
+        return homeGround;
+    }
+
 }
 

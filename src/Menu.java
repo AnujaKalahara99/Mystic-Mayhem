@@ -17,15 +17,25 @@ public class Menu {
         boolean running = true;
         while (running) {
             System.out.println("Main Menu:");
-            System.out.println("1. Profile");
-            System.out.println("2. Army");
+            System.out.println("Welcome back" + player.getUserName() + "!");
+            System.out.println("Gold coins - " + player.getGold());
+            System.out.println("XP - " + player.getXp());
+            System.out.println("*****************************************************");
+            System.out.println("Menu");
+            System.out.println("1. View Profile");
+            System.out.println("2. View Army");
             System.out.println("3. Attack");
+            System.out.println("4. Leaderboard");
             //System.out.println("4. Combat Mode (" + (player.getCombatMode() ? "On" : "Off") + ")");
-            System.out.println("5. Exit");
+            System.out.println("5. HomeGround");
+            System.out.println("6. Logout");
+            System.out.println("7. Exit");
+            System.out.println("*****************************************************");
             System.out.print("Choose an option: ");
 
             int choice = scanner.nextInt();
             scanner.nextLine(); // Consume newline
+            System.out.println();
 
             switch (choice) {
                 case 1:
@@ -38,9 +48,17 @@ public class Menu {
                     attackOption(player,players,scanner);
                     break;
                 case 4:
-                    toggleCombatMode(player);
+//                    toggleCombatMode(player);
+                    for (int i = 0; i < players.size(); i++) {
+                        System.out.println("Player " + players.get(i).getUserName() + "  has XP " + players.get(i).getXp());
+                    }
                     break;
                 case 5:
+                    selectHomeGround(player);
+                case 6:
+                    Main.loop(players);
+                    break;
+                case 7:
                     running = false;
                     SaveGame.serializePlayerProfiles();
                     break;
@@ -52,12 +70,16 @@ public class Menu {
     }
 
     private static void profileprint (Player player) {
+        System.out.println("*****************************************************");
         System.out.println("Welcome back " +  player.getUserName() + "!");
         System.out.println("Profile:");
         System.out.println("Name: " + player.getName());
         System.out.println("Username: " + player.getUserName());
         System.out.println("1. Change Name");
-        System.out.println("2. Exit");
+        System.out.println("2. Back");
+        System.out.println("*****************************************************");
+        System.out.print("Choose an option : ");
+
     }
 
 
@@ -67,12 +89,18 @@ public class Menu {
         do {
             profileprint(player);
             choice = scanner.nextInt();
+            System.out.println();
             scanner.nextLine();
             if (choice==1) {
                 System.out.print("Enter your new name: ");
                 String newName = scanner.nextLine();
-                player.setName(newName);
-                System.out.println("Name changed successfully!");
+                System.out.println("Confirm " + newName + " as your new name? (y/n)");
+                String confirm = scanner.nextLine();
+                if(confirm == "y") {
+                    player.setName(newName);
+                    System.out.println("Name changed successfully!");
+                }
+                choice = 2;
 
             }
             else if(choice!=2){
@@ -119,4 +147,23 @@ public class Menu {
         player.setCombatMode(!player.getCombatMode());
         System.out.println("Combat Mode is now " + (player.getCombatMode() ? "On" : "Off"));
     }
+    private static void selectHomeGround(Player player){
+        boolean check = false;
+        do {
+            System.out.println("Select home ground : ");
+            System.out.println("1.Hillcrest");
+            System.out.println("2.Marshland");
+            System.out.println("3.Dessert");
+            System.out.println("4.Arcane");
+            Scanner scanner = new Scanner(System.in);
+            int num = scanner.nextInt();
+            player.setHomeGround(num);
+            if(num > 0 && num <= 4){
+                check = true;
+            }
+        }
+        while (check);
+    }
 }
+
+

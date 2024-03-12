@@ -8,6 +8,11 @@ import java.io.Serializable;
             super(name, price, attackBonus, defenceBonus, healthBonus, speedBonus);
         }
 
+        public static String[] listAll()
+        {
+            return new String[]{"Excalibur", "Amulet", "Crystal"};
+        }
+
         public static int getBuyingPrice(String type){
             type = type.toLowerCase(Locale.ROOT);
             switch (type) {

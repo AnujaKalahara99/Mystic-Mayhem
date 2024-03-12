@@ -17,10 +17,10 @@ public class LoginSignupSystem {
             System.out.println("1. Login");
             System.out.println("2. Signup");
             System.out.println("3. Exit");
-            System.out.println("4. ListAllPlayers");
             System.out.print("Choose an option: ");
             int choice = scanner.nextInt();
             scanner.nextLine(); // Consume newline
+            System.out.println();
 
             switch (choice) {
                 case 1:
@@ -31,9 +31,6 @@ public class LoginSignupSystem {
                     break;
                 case 3:
                     running = false;
-                    break;
-                case 4:  ///////////////////////////delete this later
-                    listPlayers();
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
@@ -56,7 +53,7 @@ public class LoginSignupSystem {
 
             return users.get(username);
         } else {
-            System.out.println("Invalid username or password. Please try again.");
+            System.out.println("Invalid username or password. Please try again.\n");
             return null;
         }
     }
@@ -82,12 +79,6 @@ public class LoginSignupSystem {
         return newPlayer;
     }
 
-    private static void listPlayers() {
-        System.out.println(users);
-//        for (Map.Entry<String, Integer> entry : hashMap.entrySet()) {
-//            System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue());
-//        }
-    }
     public static void setPlayerData(List<Player> players){
         for(Player savedPlayer :players){
             users.put(savedPlayer.getUserName(),savedPlayer);

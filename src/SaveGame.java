@@ -26,11 +26,10 @@ public class SaveGame {
         try (FileInputStream fileIn = new FileInputStream("players.ser");
              ObjectInputStream in = new ObjectInputStream(fileIn)) {
             players = (ArrayList<Player>)in.readObject();
-            System.out.println("Player profiles deserialized successfully.");
+            System.out.println("Player profiles deserialized successfully \n");
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+
         }
-        System.out.println("size " + players.size());
         return players;
     }
 }
