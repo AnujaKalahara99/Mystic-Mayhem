@@ -45,7 +45,7 @@ public abstract class Warrior implements Serializable, Cloneable {
 
     public void upgrade(Scanner scanner, int wallet, Consumer<Integer> setWallet)
     {
-        System.out.println("\nUpgrade " + name);
+        System.out.println("Upgrade " + name);
         System.out.println("1. Armour");
         System.out.println("2. Artefacts");
         System.out.println("98. Back");
@@ -58,20 +58,18 @@ public abstract class Warrior implements Serializable, Cloneable {
         }
         if(input == 1){
             System.out.println("\nExisting Armour : "+ (armour != null ? armour.getName() : "No Armour"));
-            upgradeSpecific(scanner,"Armour",Armour.listAll(),(type) -> armour = Armour.create(type), Armour::getBuyingPrice, wallet, setWallet);
-            setWallet.accept(wallet - armour.getPrice());
+            upgradeSpecific(scanner,"Armour",Armour.listAll(), Armour::stats,(type) -> armour = Armour.create(type), Armour::getBuyingPrice, wallet, setWallet);
         }
         else if(input == 2){
             System.out.println("\nExisting Artefact : "+ (artefact != null ? artefact.getName() : "No Artefact"));
-            upgradeSpecific(scanner,"Artefact",Artefact.listAll(),(type) -> artefact = Artefact.create(type),Artefact::getBuyingPrice, wallet, setWallet);
-            setWallet.accept(wallet - artefact.getPrice());
+            upgradeSpecific(scanner,"Artefact",Artefact.listAll(), Artefact::stats,(type) -> artefact = Artefact.create(type),Artefact::getBuyingPrice, wallet, setWallet);
         }
     }
 
-    private void upgradeSpecific(Scanner scanner, String type, String[] arr, Consumer<String> create, Function<String, Integer> getBuyingPrice, int wallet, Consumer<Integer> setWallet){
+    private void upgradeSpecific(Scanner scanner, String type, String[] arr,  Function<String, String> getStats, Consumer<String> create, Function<String, Integer> getBuyingPrice, int wallet, Consumer<Integer> setWallet){
         System.out.println("\n" + type+"s Available to upgrade ");
         for (int i = 0; i < arr.length; i++) {
-            System.out.println((i+1) + ". " + arr[i]);
+            System.out.println((i+1) + ". " + getStats.apply(arr[i]));
         }
         System.out.println("98. Back");
         System.out.print("Choose : ");
@@ -79,11 +77,15 @@ public abstract class Warrior implements Serializable, Cloneable {
         if(input == 98) return;
         if(input <= 0 || input >arr.length){
             System.out.println("Invalid Input");
-            upgradeSpecific(scanner,type,arr, create,getBuyingPrice, wallet, setWallet);
+            upgradeSpecific(scanner,type,arr,getStats, create,getBuyingPrice, wallet, setWallet);
+            return;
         }
+        input -= 1;
+
         if(getBuyingPrice.apply(arr[input]) > wallet){
             System.out.println("Not Enough Money");
-            upgradeSpecific(scanner,type,arr, create,getBuyingPrice, wallet,setWallet);
+            upgradeSpecific(scanner,type,arr, getStats, create,getBuyingPrice, wallet,setWallet);
+            return;
         }
         create.accept(arr[input]);
         setWallet.accept(wallet -  getBuyingPrice.apply(arr[input]));
@@ -153,13 +155,19 @@ public abstract class Warrior implements Serializable, Cloneable {
     public abstract Warrior clone() throws CloneNotSupportedException;
 
     public void printStats() {
+        int priceBuff = (armour != null ? armour.getPrice() : 0) + (artefact != null ? artefact.getPrice() : 0);
+        int atkBuff = (armour != null ? armour.getAttackBonus(0) : 0) + (artefact != null ? artefact.getAttackBonus(0) : 0);
+        int defBuff = (armour != null ? armour.getDefenseBonus(0) : 0) + (artefact != null ? artefact.getDefenseBonus(0) : 0);
+        float hthBuff = (armour != null ? armour.getHealthBonus(0) : 0) + (artefact != null ? artefact.getHealthBonus(0) : 0);
+        int spdBuff = (armour != null ? armour.getSpeedBonus(0) : 0) + (artefact != null ? artefact.getSpeedBonus(0) : 0);
+
         System.out.print(name);
         System.out.print("(" + tribe + ") -> ");
-        System.out.print("Price: " + price + " ");
-        System.out.print("Atk: " + attack + " ");
-        System.out.print("Def: " + defence + " ");
-        System.out.print("hp: " + health + " ");
-        System.out.print("speed: " + speed + " ");
+        System.out.print("Price: " + price + (priceBuff != 0 ?  "+(" + priceBuff + ") " : " "));
+        System.out.print("Atk: " + attack +  (atkBuff != 0 ?  "+(" + atkBuff + ") " : " "));
+        System.out.print("Def: " + defence + (defBuff != 0 ?  "+(" + defBuff + ") " : " "));
+        System.out.print("hp: " + health + (hthBuff != 0 ?  "+(" + hthBuff + ") " : " "));
+        System.out.print("speed: " + speed + (spdBuff != 0 ?  "+(" + spdBuff + ") " : " "));
         if(armour != null)
             System.out.print("        wears Armour : " + armour.getName());
         if(artefact != null)

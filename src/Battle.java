@@ -82,7 +82,7 @@ public class Battle {
 
         }
         System.out.println(player1.getUserName() +" XP: "+player1.getXp() + "  gold coins: "+player1.getGold());
-        System.out.println(player1.getUserName() +" XP: "+player2.getXp() + "  gold coins: "+player2.getGold());
+        System.out.println(player2.getUserName() +" XP: "+player2.getXp() + "  gold coins: "+player2.getGold());
 
     }
 

@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="Mystic-Mayhem:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Mystic_Mayhem_jar</output-path>
+    <root id="archive" name="Mystic-Mayhem.jar">
+      <element id="module-output" name="Mystic-Mayhem" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" />
+    </root>
+  </artifact>
+</component>

@@ -1,5 +1,7 @@
 package Wearables;
 
+import Enums.ArmourEnum;
+
 import java.util.Locale;
 import java.io.Serializable;
 
@@ -38,10 +40,21 @@ public class Armour extends  Wearable implements Serializable{
             case "regalica" -> {
                 return new Armour("regalica", getBuyingPrice("regalica"),0,1,0,0);
             }
-            case "crystal" -> {
+            case "fleece" -> {
                 return new Armour("fleece", getBuyingPrice("fleece"),0,2,1,-1);
             }
             default -> throw new IllegalStateException("Unexpected type: " + type);
         }
+    }
+
+    public static String stats(String type){
+        type = type.toLowerCase(Locale.ROOT);
+        String s = switch (type) {
+            case "chainmail" -> "Chainmail : " + "Price(" + getBuyingPrice("chainmail") + ") Atk(0) Def(1) Hth(0) Spd(-1)";
+            case "regalica" -> "Regalica : " + "Price(" + getBuyingPrice("regalica") + ") Atk(0) Def(1) Hth(0) Spd(0)";
+            case "fleece" -> "Fleece : " + "Price(" + getBuyingPrice("fleece") + ") Atk(0) Def(2) Hth(1) Spd(-1)";
+            default -> throw new IllegalStateException("Unexpected type: " + type);
+        };
+        return s;
     }
 }

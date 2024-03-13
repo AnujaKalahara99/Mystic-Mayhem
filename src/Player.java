@@ -23,7 +23,7 @@ public class Player implements Serializable{
         this.password = password;
         this.army = new Army();
         this.id=++count;
-        this.gold=1000;
+        this.gold=500;
         this.xp=0;
 
 
@@ -124,8 +124,6 @@ public class Player implements Serializable{
             case 4:
                 this.homeGround = "arcane";
                 break;
-            default:
-                System.out.println("Invalid response. Try again!");
         }
     }
     public String getHomeGround() {

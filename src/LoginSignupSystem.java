@@ -18,6 +18,7 @@ public class LoginSignupSystem {
             System.out.println("2. Signup");
             System.out.println("3. Exit");
             System.out.print("Choose an option: ");
+
             int choice = scanner.nextInt();
             scanner.nextLine(); // Consume newline
             System.out.println();
@@ -49,9 +50,9 @@ public class LoginSignupSystem {
         String password = scanner.nextLine();
 
         if (users.containsKey(username) && users.get(username).isPassword(password)) {
-            System.out.println("Login successful!");
-
-            return users.get(username);
+            Player player = users.get(username);
+            System.out.println("Signup successful! Welcome " + player.getName());
+            return player;
         } else {
             System.out.println("Invalid username or password. Please try again.\n");
             return null;
@@ -59,22 +60,48 @@ public class LoginSignupSystem {
     }
 
     private static Player signup(Scanner scanner) {
-        System.out.print("Enter your name: ");
-        String name = scanner.nextLine();
-        System.out.print("Enter a unique username: ");
-        String username = scanner.nextLine();
+        boolean check;
+        String name , username , password;
+        do{
+
+            System.out.print("Enter your name: ");
+            name = scanner.nextLine();
+            if(name.equals("")){
+                System.out.println("Name cannot be null");
+                check = true;
+            }
+            else{ check = false;}
+        }
+        while(check);
+        do{
+            System.out.print("Enter a unique username: ");
+            username = scanner.nextLine();
+            if(username.equals("")){
+                System.out.println("Username cannot be null");
+                check = true;
+            }
+            else{check = false;}
+        }
+        while(check);
+
         while ( users.containsKey(username)) {
             System.out.println("Username already taken. Please choose another one.");
             System.out.print("Enter a unique username: ");
             username = scanner.nextLine();
         }
 
-        System.out.print("Set a password: ");
-        String password = scanner.nextLine();
+        do {
+            System.out.print("Set a password: ");
+            password = scanner.nextLine();
+            if(password.equals("")){
+                check = true;
+            }
+        }
+        while(check);
         Player newPlayer = new Player(username, name, password);
         users.put(username, newPlayer);
 
-        System.out.println("Signup successful!");
+        System.out.println("Signup successful! Welcome " + newPlayer.getName());
         SaveGame.addPlayer(newPlayer);
         return newPlayer;
     }

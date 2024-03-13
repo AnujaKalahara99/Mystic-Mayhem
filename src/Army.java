@@ -67,9 +67,6 @@ public class Army implements Serializable {
         }
 
         Queue<Warrior>[] crew = new Queue[2];
-
-        for (Warrior x : attackingCrew)
-            System.out.println(x.getName());
         crew[0] = attackingCrew;
         crew[1] = defendingCrew;
         return crew;
@@ -141,7 +138,8 @@ public class Army implements Serializable {
             System.out.println("Selling existing " + existinigWarrior.getName() + " -" + sell + "gc");
         else
             System.out.println("No existing " + name + " to sell " + "+0gc");
-        System.out.println("Total Cost                 " + cost + "gc");
+
+        System.out.println((cost >= 0 ? "Total Cost" : "Refund") + "                   " + Math.abs(cost) + "gc");
         System.out.println("-----------------------------\n");
 
         if (cost <= player.getGold()) {

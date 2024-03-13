@@ -44,6 +44,17 @@ import java.io.Serializable;
                 default -> throw new IllegalStateException("Unexpected type: " + type);
             }
         }
+
+        public static String stats(String type){
+            type = type.toLowerCase(Locale.ROOT);
+            String s = switch (type) {
+                case "excalibur" -> "Excalibur : " + "Price(" + getBuyingPrice("excalibur") + ") Atk(2) Def(0) Hth(0) Spd(0)";
+                case "amulet" -> "Amulet : " + "Price(" + getBuyingPrice("amulet") + ") Atk(1) Def(-1) Hth(1) Spd(1)";
+                case "crystal" -> "Crystal : " + "Price(" + getBuyingPrice("crystal") + ") Atk(2) Def(1) Hth(-1) Spd(-1)";
+                default -> throw new IllegalStateException("Unexpected type: " + type);
+            };
+            return s;
+        }
     }
 
 
