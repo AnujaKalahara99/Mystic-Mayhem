@@ -11,7 +11,10 @@ import java.util.*;
 
 public class Menu {
 
-    public static void displayMenu(Player player, ArrayList<Player> players) {
+    //This for static method to wait and loop
+    private static final Object lock = new Object();
+
+    public static Player displayMenu(Player player, ArrayList<Player> players) {
         Scanner scanner = new Scanner(System.in);
 
         boolean running = true;
@@ -48,12 +51,17 @@ public class Menu {
                     attackOption(player,players,scanner);
                     break;
                 case 4:
-//                    toggleCombatMode(player);
                     players.sort(Comparator.comparing(Player::getXp).reversed());
                     System.out.println("Leaderboard ranked to XP");
-                    for (Player value : players) {
-                        System.out.println("Player " + value.getUserName() + "  has XP " + value.getXp()
-                        + (value == player ? " (You)" : ""));
+                    synchronized (lock) {
+                        for (Player value : players) {
+                            System.out.println("Player " + value.getName() + "  has XP " + value.getXp()
+                                    + (value == player ? " (You)" : ""));
+                            try {
+                                lock.wait(500);
+                            } catch (InterruptedException e) {
+                            }
+                        }
                     }
                     System.out.println();
                     break;
@@ -61,22 +69,25 @@ public class Menu {
                     selectHomeGround(player);
                     break;
                 case 6:
-                    Main.loop(players);
-                    break;
+                    SaveGame.serializePlayerProfiles();
+                    player=null;
+                    return player;
+                   // break;
                 case 99:
                     running = false;
                     SaveGame.serializePlayerProfiles();
+                    System.exit(0);
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
         }
         scanner.close();
+        return player;
     }
 
     private static void profileprint (Player player) {
         System.out.println("*****************************************************");
-        System.out.println("Welcome back " +  player.getUserName() + "!");
         System.out.println("Profile:");
         System.out.println("Name: " + player.getName());
         System.out.println("Username: " + player.getUserName());
@@ -195,5 +206,3 @@ public class Menu {
         while (true);
     }
 }
-
-

@@ -16,8 +16,7 @@ public class Battle {
 
 
     public void startBattle() {
-        System.out.println(player1.getUserName() + " vs. " + player2.getUserName());
-
+        System.out.println(player1.getName() + " vs. " + player2.getName());
 
         Queue<Warrior>[] player1Army = player1.getArmy().getArmyQueues();
         Queue<Warrior>[] player2Army = player1.getArmy().getArmyQueues();
@@ -59,7 +58,7 @@ public class Battle {
                 defender=player1;
 
             }
-            System.out.println("Turn" + i + ":" + attacker.getUserName());
+            System.out.println("Turn" + i + ":" + attacker.getName());
             performTurn(currentAttacker, currentDefender,attacker,defender);
 
             if(player1Army[1].isEmpty()){
@@ -71,7 +70,7 @@ public class Battle {
             }
 
             if(player2Army[1].isEmpty()){
-                System.out.println(player1.getUserName() + "won!");
+                System.out.println(player1.getName() + "won!");
                 player1.setGold((int)(player2.getGold()*0.1+player1.getGold()));
                 player2.setGold((int)(player2.getGold()*0.9));
                 player1.setXp(player1.getXp()+1);
@@ -81,17 +80,19 @@ public class Battle {
                 System.out.println("Draw");
 
         }
-        System.out.println(player1.getUserName() +" XP: "+player1.getXp() + "  gold coins: "+player1.getGold());
-        System.out.println(player2.getUserName() +" XP: "+player2.getXp() + "  gold coins: "+player2.getGold());
+        System.out.println(player1.getName() +" XP: "+player1.getXp() + "  gold coins: "+player1.getGold());
+        System.out.println(player2.getName() +" XP: "+player2.getXp() + "  gold coins: "+player2.getGold());
 
     }
 
     private void performTurn(Queue<Warrior> attackerQ, Queue<Warrior> defenderQ,Player attacker, Player defender) {
         synchronized (this) {
             Warrior attackingWarrior = attackerQ.remove();
-            while (attackingWarrior.getHealth() <= 0)
+            while (attackingWarrior.getHealth() <= 0) {
+                if (attackerQ.size() <= 0) return;
                 attackingWarrior = attackerQ.remove();
-            if(battlefield=="arcane" && attackingWarrior.getTribe()=="mystics"){
+            }
+            if(battlefield == "arcane" && attackingWarrior.getTribe() == "mystics"){
                 attackingWarrior.setHealth(attackingWarrior.getHealth()*110/100);
             }
 
@@ -99,7 +100,7 @@ public class Battle {
             if(attackingWarrior instanceof Healer){
                 Warrior minHealthWarrior=attackingWarrior;
                 for(Warrior element:attackerQ){
-                    if(element.getHealth()<minHealthWarrior.getHealth()){
+                    if(element.getHealth() > 0 ||element.getHealth()<minHealthWarrior.getHealth()){
                         minHealthWarrior=element;
                     }
                 }
@@ -108,7 +109,7 @@ public class Battle {
 
                 System.out.println(attacker.getName() + "'s " + attackingWarrior.getName() + " heals " +
                         minHealthWarrior.getName());
-                System.out.println(minHealthWarrior.getName() + "'s health: " + newHealth);
+                System.out.println(minHealthWarrior.getName() + "'s health: " + minHealthWarrior.getHealth());
                 System.out.println(attackingWarrior.getName() + "'s health: " + attackingWarrior.getHealth());
 
                 //2nd turn in arcane for saint
@@ -124,7 +125,7 @@ public class Battle {
                     System.out.println("bonus turn");
                     System.out.println(attacker.getName() + "'s " + attackingWarrior.getName() + " heals " +
                             minHealthWarrior.getName());
-                    System.out.println(minHealthWarrior.getName() + "'s health: " + newHealth);
+                    System.out.println(minHealthWarrior.getName() + "'s health: " + minHealthWarrior.getHealth());
                     System.out.println(attackingWarrior.getName() + "'s health: " + attackingWarrior.getHealth());
 
                 }
@@ -142,11 +143,11 @@ public class Battle {
             //Print each warrior outputs
             System.out.println(attacker.getName() + "'s " + attackingWarrior.getName() + " attacks " +
                     defender.getName() + "'s " + defendingWarrior.getName());
-            System.out.println(defendingWarrior.getName() + "'s health: " + newHealth);
+            System.out.println(defendingWarrior.getName() + "'s health: " + defendingWarrior.getHealth());
             System.out.println(attackingWarrior.getName() + "'s health: " + attackingWarrior.getHealth());
 
             if (newHealth <= 0) {
-                System.out.println(defendingWarrior.getName() + "died");
+                System.out.println(defendingWarrior.getName() + " died");
                 defenderQ.remove();
             }
 

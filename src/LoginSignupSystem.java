@@ -32,6 +32,7 @@ public class LoginSignupSystem {
                     break;
                 case 3:
                     running = false;
+                    player=null;
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");

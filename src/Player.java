@@ -15,7 +15,7 @@ public class Player implements Serializable{
     private String homeGround;
     private String password;
     private Army army;
-    private Boolean combatMode;
+    private boolean combatMode = true;
 
     public Player(String userName, String name, String password) {
         this.userName = userName;
@@ -76,13 +76,16 @@ public class Player implements Serializable{
         this.xp = xp;
     }
 
-    public Boolean getCombatMode() {
+    public boolean getCombatMode() {
+        if(homeGround == null || homeGround.isEmpty()) return false;
+        if(!army.isArmyReady()) return false;
         return combatMode;
     }
 
     public void setCombatMode(Boolean combatMode) {
         this.combatMode = combatMode;
     }
+
     public Player selectOpponent(ArrayList<Player> players){
         if(!army.isArmyReady() ){
             System.out.println("Not Enough Warriors in your team");
@@ -99,9 +102,17 @@ public class Player implements Serializable{
             System.out.println("No users available to fight");
             return null;
         }
+
+        Player opponent = null;
         Random random=new Random();
-        int randomNumber= random.nextInt(playerscopy.size());
-        Player opponent = playerscopy.get(randomNumber);
+        while (!playerscopy.isEmpty()){
+            int randomNumber= random.nextInt(playerscopy.size());
+            opponent = playerscopy.get(randomNumber);
+            playerscopy.remove(randomNumber);
+            if(opponent.getCombatMode()) break;
+        }
+
+        if(opponent == null) System.out.println("No users available to fight");
         return opponent;
 
     }

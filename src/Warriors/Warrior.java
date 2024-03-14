@@ -102,7 +102,8 @@ public abstract class Warrior implements Serializable, Cloneable {
             h = armour.getHealthBonus(h);
         if(artefact != null)
             h = artefact.getHealthBonus(h);
-        return h;
+        if(h < 0f) h = 0f;
+        return Math.round(h * 10.0f) / 10.0f;
 
     }
     public void setHealth(float health) {
